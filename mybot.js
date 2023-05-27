@@ -40,16 +40,19 @@ function sendAttachment(channelName, attach){
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+console.log(commandFiles)
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
+    
 	// Set a new item in the Collection with the key as the command name and the value as the exported module
 	if ('data' in command && 'execute' in command) {
+        console.log(command.data.name + " " + command);
 		client.commands.set(command.data.name, command);
 	} else {
 		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
-    console.log("Abbababab")
+
 }
 
 client.on(Events.ClientReady, () => {
@@ -62,7 +65,7 @@ client.on(Events.ClientReady, () => {
 });
 
 client.on(Events.InteractionCreate, async interaction => {
-
+    console.log("I'm here")
 	if (!interaction.isChatInputCommand()) return;
 
 	const command = interaction.client.commands.get(interaction.commandName);
@@ -84,9 +87,9 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 
-/*
+
 client.on("messageCreate", (msg) => {
-    let bday = "Happy Birthday Shemoya, you're here now!";
+    let bday = "Happy Birthday X, you're here now!";
     msg.content = msg.content.toLowerCase();
     if (msg.author === client.user)
         return;
@@ -99,7 +102,7 @@ client.on("messageCreate", (msg) => {
         sendText(msg.channel.name, ":smile:");
     if (msg.content.includes("bad bot"))
         sendText(msg.channel.name, ":sob:")
-    if (msg.content.includes("say welcome to superstar"))
+    if (msg.content.includes("say welcome to X"))
         sendText(msg.channel.name, bday);
     
         
@@ -107,7 +110,7 @@ client.on("messageCreate", (msg) => {
         
    
 });
-*/
+
 
 
 const TOKEN = process.env.TOKEN;
